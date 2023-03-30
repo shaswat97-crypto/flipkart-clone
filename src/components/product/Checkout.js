@@ -45,8 +45,8 @@ export default function Checkout() {
   const handleNext = (e) => {
     e.preventDefault();
     setActiveStep(activeStep + 1);
-    // console.log(e.target.innerText);
-    if (e.target.innerText == "PLACE ORDER" && util.checkoutFrom == "cart") {
+    console.log(e.currentTarget, e.target);
+    if (e.target.innerText.includes("PLACE ORDER") && util.checkoutFrom == "cart") {
       console.log("from cart checkout");
       util.setIncartState(null);
       localStorage.setItem("cart", null);
