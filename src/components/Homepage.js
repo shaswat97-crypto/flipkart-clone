@@ -14,8 +14,8 @@ function Homepage() {
   console.log(util.isLoggedIn);
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
-      if (!user) navTo("/login");
-      else util.setLoggedIn(user);
+      if (user);
+        util.setLoggedIn(user);
     });
   }, []);
 
@@ -94,7 +94,7 @@ function Homepage() {
 
   return (
     <>
-      {util.isLoggedIn ? (
+      {/* {util.isLoggedIn ? ( */}
         <div>
           <HeaderForHome data={data} homeFunc={homeFunc} />
           <div className="banner">
@@ -103,11 +103,11 @@ function Homepage() {
           {success && cartAlert}
           {util.homeCont}
         </div>
-      ) : (
+      {/* ) : (
         <div className="productCont">
           <span className="loader"></span>
         </div>
-      )}
+      )} */}
     </>
   );
 }

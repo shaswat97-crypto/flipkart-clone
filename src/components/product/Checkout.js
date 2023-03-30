@@ -18,19 +18,7 @@ import Review from "./Review";
 import Header from "../Header";
 import { CartStore } from "../CartContext";
 import { useNavigate } from "react-router-dom";
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+import Alert from "@mui/material/Alert";
 
 const steps = ["Shipping address", "Payment details", "Review your order"];
 
@@ -52,8 +40,10 @@ const theme = createTheme();
 export default function Checkout() {
   const util = React.useContext(CartStore);
   const [activeStep, setActiveStep] = React.useState(0);
+  const [success, stSuccess] = React.useState(false);
   const navTo = useNavigate();
   const handleNext = (e) => {
+    e.preventDefault();
     setActiveStep(activeStep + 1);
     console.log(e.target.innerText);
     if (e.target.innerText == "PLACE ORDER" && util.checkoutFrom == "cart") {
@@ -61,22 +51,31 @@ export default function Checkout() {
       util.setIncartState(null);
       localStorage.setItem("cart", null);
     }
-    if (e.target.innerText == "PLACE ORDER") {
-      console.log("timeout");
-      setTimeout(() => {
-        navTo("/");
-      }, 3000);
-    }
+    // if (e.target.innerText == "PLACE ORDER") {
+    //   console.log("timeout");
+    //   setTimeout(() => {
+    //     navTo("/");
+    //   }, 3000);
+    // }
   };
 
   const handleBack = () => {
     setActiveStep(activeStep - 1);
   };
 
+  const cartAlert = (
+    <div className="alerted">
+      <Alert sx={{ backgroundColor: "white" }} severity="success">
+        Item added to cart!
+      </Alert>
+    </div>
+  );
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Header></Header>
+      {success && cartAlert}
       <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
         <Paper
           variant="outlined"
@@ -102,6 +101,9 @@ export default function Checkout() {
                 confirmation, and will send you an update when your order has
                 shipped.
               </Typography>
+              <Button sx={{mt:3}} onClick={() => navTo("/")} variant="contained">
+                Go to home
+              </Button>
             </React.Fragment>
           ) : (
             <React.Fragment>
@@ -117,6 +119,7 @@ export default function Checkout() {
                   variant="contained"
                   onClick={handleNext}
                   sx={{ mt: 3, ml: 1 }}
+                  type='submit'
                 >
                   {activeStep === steps.length - 1 ? "Place order" : "Next"}
                 </Button>

@@ -34,8 +34,13 @@ function Productpage() {
   }
   // console.log(util.inCartState, util.currProduct.id)
   const handleBuyNow = () => {
-    util.setCheckoutFrom("page");
-    navTo("/checkout");
+    if (util.isLoggedIn) {
+      util.setCheckoutFrom("page");
+      navTo("/checkout");
+    }
+    else{
+      navTo('/login');
+    }
   };
   const [success, setSuccess] = useState(false);
   const handleAddCartClick = (product) => {
@@ -75,12 +80,17 @@ function Productpage() {
   return (
     <div>
       <Header></Header>
-      <div className="bannerProd"><img src={banner} alt="" /></div>
+      <div className="bannerProd">
+        <img src={banner} alt="" />
+      </div>
       {success && cartAlert}
       {/* <Dashboard></Dashboard> */}
       {product && product != "undefined" && Object.keys(product).length ? (
         <>
-          <Box className="product" sx={{ flexGrow: 1, pt:8, pb:8, pl:14, pr:14, }}>
+          <Box
+            className="product"
+            sx={{ flexGrow: 1, pt: 8, pb: 8, pl: 14, pr: 14 }}
+          >
             <Grid container spacing={2}>
               <Grid
                 item
@@ -112,7 +122,7 @@ function Productpage() {
                     color="success"
                     variant="contained"
                   >
-                    <ElectricBoltIcon /> &nbsp; buy now
+                    <ElectricBoltIcon /> &nbsp; {util.isLoggedIn?'buy now':'login to buy'}
                   </Button>
                 </Stack>
               </Grid>
@@ -127,38 +137,34 @@ function Productpage() {
               >
                 <div className="dataCont">
                   <h3>{product.title}</h3>
-                <div className="chipCont">
-                      <div className="chip">
-                        <div>{product.rating.rate}</div>
-                        <div>
-                          &nbsp; <StarIcon />
-                        </div>
-                      </div>
-                      <div className="chipCount">
-                        &nbsp; ({product.rating.count})
+                  <div className="chipCont">
+                    <div className="chip">
+                      <div>{product.rating.rate}</div>
+                      <div>
+                        &nbsp; <StarIcon />
                       </div>
                     </div>
-                    <div className="price">
-                      <h1>
-                        {(
-                          product.price -
-                          product.price * (Number(product.id) * 0.01)
-                        ).toFixed(2)}
-                      </h1>
-                      <h3>
-                        <span style={{ textDecoration: "line-through" }}>
-                          {product.price}
-                        </span>{" "}
-                        <span style={{ color: "green" }}>
-                          {product.id}% off
-                        </span>
-                      </h3>
+                    <div className="chipCount">
+                      &nbsp; ({product.rating.count})
                     </div>
-                    <div>
-                      {product.description}
-                    </div>
+                  </div>
+                  <div className="price">
+                    <h1>
+                      {(
+                        product.price -
+                        product.price * (Number(product.id) * 0.01)
+                      ).toFixed(2)}
+                    </h1>
+                    <h3>
+                      <span style={{ textDecoration: "line-through" }}>
+                        {product.price}
+                      </span>{" "}
+                      <span style={{ color: "green" }}>{product.id}% off</span>
+                    </h3>
+                  </div>
+                  <div>{product.description}</div>
                 </div>
-                </Grid>
+              </Grid>
             </Grid>
           </Box>
         </>

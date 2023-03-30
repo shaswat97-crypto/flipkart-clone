@@ -33,8 +33,8 @@ function LoginForm() {
       // console.log(event.target.getAttribute("use"))
       if (event.target.getAttribute("use") == "guest") {
         console.log("guest");
-        await auth.signInWithEmailAndPassword("a@a.com", "123456");
-        util.setLoggedIn(true);
+        // await auth.signInWithEmailAndPassword("a@a.com", "123456");
+        // util.setLoggedIn(true);
         // console.log(util.IsLoggedIn);
         navTo("/");
       } else if (event.target.getAttribute("use") == "signup") {
