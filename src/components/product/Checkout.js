@@ -45,18 +45,12 @@ export default function Checkout() {
   const handleNext = (e) => {
     e.preventDefault();
     setActiveStep(activeStep + 1);
-    console.log(e.target.innerText);
+    // console.log(e.target.innerText);
     if (e.target.innerText == "PLACE ORDER" && util.checkoutFrom == "cart") {
       console.log("from cart checkout");
       util.setIncartState(null);
       localStorage.setItem("cart", null);
     }
-    // if (e.target.innerText == "PLACE ORDER") {
-    //   console.log("timeout");
-    //   setTimeout(() => {
-    //     navTo("/");
-    //   }, 3000);
-    // }
   };
 
   const handleBack = () => {
@@ -106,7 +100,7 @@ export default function Checkout() {
               </Button>
             </React.Fragment>
           ) : (
-            <React.Fragment>
+            <form onSubmit={handleNext}>
               {getStepContent(activeStep)}
               <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
                 {activeStep !== 0 && (
@@ -117,14 +111,13 @@ export default function Checkout() {
 
                 <Button
                   variant="contained"
-                  onClick={handleNext}
                   sx={{ mt: 3, ml: 1 }}
                   type='submit'
                 >
                   {activeStep === steps.length - 1 ? "Place order" : "Next"}
                 </Button>
               </Box>
-            </React.Fragment>
+            </form>
           )}
         </Paper>
         {/* <Copyright /> */}
